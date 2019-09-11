@@ -5,6 +5,7 @@ module.exports = {
   add,
   update,
   remove,
+  findSteps
 }
 
 
@@ -33,4 +34,11 @@ function update(id, changes) {
 function remove(id) {
   return db('schemes')
     .where('id', id).del()
+}
+
+function findSteps(id) {
+  return db('steps')
+    .join('schemes', 'steps.scheme_id', '=', 'schemes.id')
+    .select('steps.id', 'schemes.scheme_name', 'steps.step_number', 'steps.instructions')
+    .where({ scheme_id: id })
 }
